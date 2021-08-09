@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DB_Homework13_Android</string>
+    <string name="search_hint">type any text</string>
+    <string name="search_label">search in video</string>
+    <string name="add_new">Add</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
