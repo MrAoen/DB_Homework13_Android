@@ -16,7 +16,6 @@ class AddNewVideo : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -25,8 +24,8 @@ class AddNewVideo : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_new_video, container, false)
 
-        val btn_save = view.findViewById<Button>(R.id.saveNewVideo)
-        btn_save.setOnClickListener {
+        val btnSave = view.findViewById<Button>(R.id.saveNewVideo)
+        btnSave.setOnClickListener {
             val vName = view.findViewById<TextInputEditText>(R.id.newName)
             val vAuthor = view.findViewById<TextInputEditText>(R.id.newAuthor)
             val vYear = view.findViewById<TextInputEditText>(R.id.newYear)
@@ -38,9 +37,15 @@ class AddNewVideo : Fragment() {
                 vDescription.text.toString()
             )
             lifecycleScope.launch(Dispatchers.IO) {
-                App.videoDao.insert(video)
+                val index: Int? = App.videoDao.ifExist(video.author, video.name, video.year)
+                if (index != null) {
+                    video.id = index
+                    App.videoDao.update(video)
+                } else {
+                    App.videoDao.insert(video)
+                }
             }
-            parentFragmentManager.popBackStack()
+            activity?.onBackPressed()
         }
 
         return view

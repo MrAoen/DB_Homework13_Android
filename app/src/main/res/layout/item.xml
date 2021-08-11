@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <TextView
+        android:id="@+id/videoName"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:id="@+id/videoName"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
     <TextView
+        android:id="@+id/videoYear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:id="@+id/videoYear"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:id="@+id/videoAuthor"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="4"
-        android:id="@+id/videoDescription"/>
+        android:layout_weight="2" />
 
+    <TextView
+        android:id="@+id/videoAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3" />
+
+    <TextView
+        android:id="@+id/videoDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4" />
 
 
 </LinearLayout>

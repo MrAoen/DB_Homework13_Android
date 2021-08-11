@@ -20,4 +20,7 @@ interface VideoDao {
 
     @Query("select * from video v where v.author like :template or v.description like :template or v.name like:template")
     suspend fun selectByAnyContain(template:String):List<Video>
+
+    @Query("select v.id from video v where v.author=:author and v.name=:name and v.year=:year")
+    suspend fun ifExist(author:String?,name:String?,year:Int?):Int
 }

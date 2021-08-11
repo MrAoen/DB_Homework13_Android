@@ -14,46 +14,34 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.db_homework13_android.adapters.VideoAdapter
 import com.example.db_homework13_android.model.entity.Video
-import com.example.db_homework13_android.model.repository.VideoDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var videoDao: VideoDao
     private lateinit var rcView: RecyclerView
-    private var list: List<Video> = listOf<Video>()
+    private var list: List<Video> = mutableListOf()
+    private var lastTemplate = ""
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //videoDao = App.videoDao
         rcView = findViewById(R.id.videoList)
-        updateList()
         rcView.layoutManager = LinearLayoutManager(this)
-        rcView.adapter = VideoAdapter(list, this)
-
+        updateList(lastTemplate)
+        rcView.adapter = VideoAdapter(list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val btnNew = findViewById<androidx.appcompat.view.menu.ActionMenuItemView>(R.id.btn_add)
         btnNew.setOnClickListener {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.container, AddNewVideo())
+                .add(R.id.container, AddNewVideo())
                 .commit()
         }
-    }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun updateList() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            list = withContext(Dispatchers.IO) {
-                App.videoDao.selectAll()
-            }
-            Log.i("DATA_V", list.toString())
-        }
-        rcView.adapter?.notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -64,7 +52,6 @@ class MainActivity : AppCompatActivity() {
             }
             Log.i("DATA_V", list.toString())
         }
-        rcView.adapter?.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -78,15 +65,16 @@ class MainActivity : AppCompatActivity() {
             setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    query.apply {
-                        updateList(query ?: "")
-                        return true
-                    }
+                    return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     query.apply {
-                        updateList(newText ?: "")
+                        lastTemplate = newText ?: ""
+                        updateList(lastTemplate)
+                        rcView.adapter = VideoAdapter(list)
+                        rcView.adapter?.notifyDataSetChanged()
+                        rcView.scrollToPosition(0)
                         return true
                     }
                 }
